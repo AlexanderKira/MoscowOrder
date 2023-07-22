@@ -36,13 +36,15 @@ class FormOrderModel{
         $orderMoscowTableQuery = "CREATE TABLE IF NOT EXISTS orderMoscow (
             `id` INT PRIMARY KEY AUTO_INCREMENT,
             `NameSender` VARCHAR (1255) NOT NULL,
-            `PhoneSender` INT(12) NOT NULL,
+            `PhoneSender` BIGINT(12) NOT NULL,
             `region` INT NOT NULL,
             `AddSender` VARCHAR (3000) NOT NULL,
+            `AddSenderApartment` INT,
+            `AddSenderfloor` INT,
             `NumberSeats` INT NOT NULL,
             `Weight` INT NOT NULL,
             `RecipientName` VARCHAR (1255) NOT NULL,
-            `PhoneRecipient` INT(12) NOT NULL,
+            `PhoneRecipient` BIGINT(12) NOT NULL,
             `AddRecipient` VARCHAR (3000) NOT NULL,
             `status` TINYINT(1) NOT NULL DEFAULT 0,
             `comments` VARCHAR (5000),
@@ -80,6 +82,8 @@ class FormOrderModel{
         $PhoneSender = $data['PhoneSender'];
         $region = $data['region'];
         $AddSender = $data['AddSender'];
+        $AddSenderApartment = $data['AddSenderApartment'];
+        $AddSenderfloor = $data['AddSenderfloor'];
         $NumberSeats = $data['NumberSeats'];
         $Weight = $data['Weight'];
         $RecipientName = $data['RecipientName'];
@@ -87,11 +91,11 @@ class FormOrderModel{
         $AddRecipient = $data['AddRecipient'];
         $comments = $data['comments'];
     
-        $query = "INSERT INTO `orderMoscow` (NameSender,PhoneSender,region,AddSender,NumberSeats,Weight,RecipientName,PhoneRecipient,AddRecipient,comments) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        $query = "INSERT INTO `orderMoscow` (NameSender,PhoneSender,region,AddSender,AddSenderApartment,AddSenderfloor,NumberSeats,Weight,RecipientName,PhoneRecipient,AddRecipient,comments) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
     
         try {
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$NameSender, $PhoneSender, $region, $AddSender, $NumberSeats, $Weight, $RecipientName, $PhoneRecipient, $AddRecipient, $comments]);
+            $stmt->execute([$NameSender, $PhoneSender, $region, $AddSender, $AddSenderApartment, $AddSenderfloor, $NumberSeats, $Weight, $RecipientName, $PhoneRecipient, $AddRecipient, $comments]);
             return true;
         }catch(PDOException $e) {
             return false;

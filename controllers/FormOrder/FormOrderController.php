@@ -14,6 +14,7 @@ class FormOrderController{
     public function store(){
         if(isset($_POST['NameSender']) && isset($_POST['PhoneSender']) 
         && isset($_POST['region']) && isset($_POST['AddSender']) 
+        && isset($_POST['AddSenderApartment']) && isset($_POST['AddSenderfloor'])
         && isset($_POST['NumberSeats']) && isset($_POST['Weight']) 
         && isset($_POST['RecipientName']) && isset($_POST['PhoneRecipient']) 
         && isset($_POST['AddRecipient'])  && isset($_POST['comments'])){
@@ -24,6 +25,8 @@ class FormOrderController{
               'PhoneSender' => $_POST['PhoneSender'],
               'region' => $_POST['region'],
               'AddSender' => $_POST['AddSender'],
+              'AddSenderApartment' => $_POST['AddSenderApartment'],
+              'AddSenderfloor' => $_POST['AddSenderfloor'],
               'NumberSeats' => $_POST['NumberSeats'],
               'Weight' => $_POST['Weight'],
               'RecipientName' => $_POST['RecipientName'],

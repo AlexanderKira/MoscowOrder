@@ -36,13 +36,15 @@ class AllOrdersModel{
         $orderMoscowTableQuery = "CREATE TABLE IF NOT EXISTS orderMoscow (
             `id` INT PRIMARY KEY AUTO_INCREMENT,
             `NameSender` VARCHAR (1255) NOT NULL,
-            `PhoneSender` INT(12) NOT NULL,
+            `PhoneSender` BIGINT(12) NOT NULL,
             `region` INT NOT NULL,
             `AddSender` VARCHAR (3000) NOT NULL,
+            `AddSenderApartment` INT,
+            `AddSenderfloor` INT,
             `NumberSeats` INT NOT NULL,
             `Weight` INT NOT NULL,
             `RecipientName` VARCHAR (1255) NOT NULL,
-            `PhoneRecipient` INT(12) NOT NULL,
+            `PhoneRecipient` BIGINT(12) NOT NULL,
             `AddRecipient` VARCHAR (3000) NOT NULL,
             `status` TINYINT(1) NOT NULL DEFAULT 0,
             `comments` VARCHAR (5000),
@@ -63,7 +65,7 @@ class AllOrdersModel{
 
     public function readAllorders(){
         try{
-            $stmt = $this->db->query("SELECT orderMoscow.id, orderMoscow.created_at, orderMoscow.status, region.name, regionPrice.price, orderMoscow.AddSender, orderMoscow.PhoneSender, orderMoscow.NameSender, orderMoscow.AddRecipient, orderMoscow.PhoneRecipient, orderMoscow.RecipientName, orderMoscow.comments, orderMoscow.NumberSeats, orderMoscow.Weight
+            $stmt = $this->db->query("SELECT orderMoscow.id, orderMoscow.created_at, orderMoscow.status, region.name, regionPrice.price, orderMoscow.AddSender, orderMoscow.AddSenderApartment, orderMoscow.AddSenderfloor, orderMoscow.PhoneSender, orderMoscow.NameSender, orderMoscow.AddRecipient, orderMoscow.PhoneRecipient, orderMoscow.RecipientName, orderMoscow.comments, orderMoscow.NumberSeats, orderMoscow.Weight
             FROM region
             JOIN regionPrice ON region.region = regionPrice.region
             JOIN orderMoscow ON region.region = orderMoscow.region
@@ -80,6 +82,7 @@ class AllOrdersModel{
         }
     }
 
+
     public function readAllareas(){
         try{
             $stmt = $this->db->query("SELECT * FROM `region`");
@@ -93,14 +96,34 @@ class AllOrdersModel{
         }
     }
 
+    public function orderFilter($id){
+        $query = "SELECT orderMoscow.id, orderMoscow.created_at, orderMoscow.status, region.name, regionPrice.price, orderMoscow.AddSender, orderMoscow.AddSenderApartment, orderMoscow.AddSenderfloor, orderMoscow.PhoneSender, orderMoscow.NameSender, orderMoscow.AddRecipient, orderMoscow.PhoneRecipient, orderMoscow.RecipientName, orderMoscow.comments, orderMoscow.NumberSeats, orderMoscow.Weight
+        FROM region
+        JOIN regionPrice ON region.region = regionPrice.region
+        JOIN orderMoscow ON region.region = orderMoscow.region
+        WHERE orderMoscow.id = ? ORDER BY created_at DESC";
+
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$id]);
+            $orders = [];
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $orders[] = $row;
+            }
+            return $orders;
+        } catch(PDOException $e){
+            return false;
+        }
+    }
+
     public function read($id){
-        $query = "SELECT orderMoscow.id, orderMoscow.status, orderMoscow.NameSender, orderMoscow.PhoneSender, region.region, region.name, orderMoscow.AddSender, orderMoscow.NumberSeats, orderMoscow.Weight, orderMoscow.RecipientName, orderMoscow.PhoneRecipient, orderMoscow.AddRecipient, orderMoscow.comments 
+        $query = "SELECT orderMoscow.id, orderMoscow.status, orderMoscow.NameSender, orderMoscow.PhoneSender, region.region, region.name, orderMoscow.AddSender, orderMoscow.AddSenderApartment, orderMoscow.AddSenderfloor, orderMoscow.NumberSeats, orderMoscow.Weight, orderMoscow.RecipientName, orderMoscow.PhoneRecipient, orderMoscow.AddRecipient, orderMoscow.comments 
         FROM region
         JOIN orderMoscow ON region.region = orderMoscow.region
         WHERE orderMoscow.id = ? ORDER BY created_at DESC";
 
         try{
-            $stmt =$this->db->prepare($query);
+            $stmt = $this->db->prepare($query);
             $stmt->execute([$id]);
             $res = $stmt->fetch(PDO::FETCH_ASSOC);
             return $res;
@@ -114,6 +137,8 @@ class AllOrdersModel{
         $PhoneSender = $data['PhoneSender'];
         $region = $data['region'];
         $AddSender = $data['AddSender'];
+        $AddSenderApartment = $data['AddSenderApartment'];
+        $AddSenderfloor = $data['AddSenderfloor'];
         $NumberSeats = $data['NumberSeats'];
         $Weight = $data['Weight'];
         $RecipientName = $data['RecipientName'];
@@ -126,7 +151,7 @@ class AllOrdersModel{
     
         try{
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$NameSender, $PhoneSender, $region, $AddSender, $NumberSeats, $Weight, $RecipientName, $PhoneRecipient, $AddRecipient,  $status, $comments, $id]);
+            $stmt->execute([$NameSender, $PhoneSender, $region, $AddSender, $AddSenderApartment, $AddSenderfloor, $NumberSeats, $Weight, $RecipientName, $PhoneRecipient, $AddRecipient,  $status, $comments, $id]);
             return true;
         } catch(PDOException $e){
             return false;
