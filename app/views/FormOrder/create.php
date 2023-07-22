@@ -18,8 +18,8 @@ ob_start();
     <div class="mb-3">
         <label for="region" class="form-label">Район</label>
         <select class="form-control" id="region" name="region">
-            <?php foreach($areas as $area): ?>
-                <option value="<?php echo $area['region'];?>" selected ><?php echo $area['region'];?></option>
+            <?php foreach($regions as $region): ?>
+                <option value="<?php echo $region['region'];?>" selected ><?php echo $region['name'];?></option>
             <?php endforeach;?>
         </select>
     </div>
@@ -49,7 +49,7 @@ ob_start();
     </div>
     <div class="mb-3">
         <label for="comments" class="form-label">Комментарий к заказу</label>
-        <textarea class="form-control" id="comments" name="comments" required></textarea>
+        <textarea class="form-control" id="comments" name="comments"></textarea>
     </div>
 
     

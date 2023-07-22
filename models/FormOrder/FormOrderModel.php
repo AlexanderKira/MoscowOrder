@@ -6,14 +6,14 @@ class FormOrderModel{
         $this->db = database::getInstance()->getConnection();
 
         try{
-            $result = $this->db->query("SELECT 1 FROM `areas` LIMIT 1");
+            $result = $this->db->query("SELECT 1 FROM `region` LIMIT 1");
         } catch(PDOException $e){
             $this->createTable();
         }
     }
 
     public function createTable(){
-        $AreasTableQuery = "CREATE TABLE IF NOT EXISTS areas (
+        $regionTableQuery = "CREATE TABLE IF NOT EXISTS region (
             `id` INT PRIMARY KEY AUTO_INCREMENT,
             `region` INT NOT NULL UNIQUE,
             `name` VARCHAR (1255) NOT NULL
@@ -22,28 +22,39 @@ class FormOrderModel{
         $distanceTableQuery = "CREATE TABLE IF NOT EXISTS distance (
             `id` INT PRIMARY KEY AUTO_INCREMENT,
             `region` INT NOT NULL,
-            `near` INT NOT NULL,
-            FOREIGN KEY (`region`) REFERENCES areas (`region`)
+            `distance` INT NOT NULL,
+            FOREIGN KEY (`region`) REFERENCES region (`region`)
+            )";
+
+        $regionPriceTableQuery = "CREATE TABLE IF NOT EXISTS regionPrice (
+            `id` INT PRIMARY KEY AUTO_INCREMENT,
+            `region` INT NOT NULL,
+            `price` INT NOT NULL,
+            FOREIGN KEY (`region`) REFERENCES region (`region`)
             )";
 
         $orderMoscowTableQuery = "CREATE TABLE IF NOT EXISTS orderMoscow (
             `id` INT PRIMARY KEY AUTO_INCREMENT,
             `NameSender` VARCHAR (1255) NOT NULL,
-            `PhoneSender` INT NOT NULL,
+            `PhoneSender` INT(12) NOT NULL,
             `region` INT NOT NULL,
             `AddSender` VARCHAR (3000) NOT NULL,
             `NumberSeats` INT NOT NULL,
             `Weight` INT NOT NULL,
             `RecipientName` VARCHAR (1255) NOT NULL,
-            `PhoneRecipient` INT NOT NULL,
+            `PhoneRecipient` INT(12) NOT NULL,
             `AddRecipient` VARCHAR (3000) NOT NULL,
-            `comments` VARCHAR (5000) NOT NULL
-             )";
+            `status` TINYINT(1) NOT NULL DEFAULT 0,
+            `comments` VARCHAR (5000),
+            `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (`region`) REFERENCES region (`region`)
+            )";
 
         try{
-            $this->db->exec($AreasTableQuery);
+            $this->db->exec($regionTableQuery);
             $this->db->exec($distanceTableQuery);
             $this->db->exec($orderMoscowTableQuery);
+            $this->db->exec($regionPriceTableQuery);
             return true;
         } catch(PDOException $e){
             return false;
@@ -53,12 +64,12 @@ class FormOrderModel{
 
     public function readAllareas(){
         try{
-            $stmt = $this->db->query("SELECT * FROM `areas`");
-            $areas = [];
+            $stmt = $this->db->query("SELECT * FROM `region`");
+            $regions = [];
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $areas[] = $row;
+                $regions[] = $row;
             }
-            return $areas;
+            return $regions;
         }catch(PDOException $e){
             return false;
         }
@@ -75,8 +86,6 @@ class FormOrderModel{
         $PhoneRecipient = $data['PhoneRecipient'];
         $AddRecipient = $data['AddRecipient'];
         $comments = $data['comments'];
-    
-        //$created_at = date('Y-m-d H:i:s');
     
         $query = "INSERT INTO `orderMoscow` (NameSender,PhoneSender,region,AddSender,NumberSeats,Weight,RecipientName,PhoneRecipient,AddRecipient,comments) VALUES (?,?,?,?,?,?,?,?,?,?)";
     

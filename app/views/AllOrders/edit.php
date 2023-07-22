@@ -8,19 +8,26 @@ ob_start();
 <div>
     <form method="POST" action="index.php?page=AllOrders&action=update&id=<?php echo $order['id']; ?>">
     <div class="mb-3">
+        <label for="status" class="form-label">Статус: </label>
+        <select name="status" id="status" class="form-control">
+            <option value="0" <?php if(!$order['status'] ) {echo 'selected';}?>>Не выполнен</option>
+            <option value="1" <?php if($order['status'] ) {echo 'selected';}?>>Выполнен</option>
+        </select>
+    </div>
+    <div class="mb-3">
         <label for="NameSender" class="form-label">Имя отправителя</label>
-        <input value="<?php echo $order['NameSender']; ?>" type="text" class="form-control" id="NameSender" name="NameSender" required>
+        <input value="<?php echo $order['NameSender'];?>" type="text" class="form-control" id="NameSender" name="NameSender" required>
     </div>
     <div class="mb-3">
         <label for="PhoneSender" class="form-label">Номер телефона отправителя</label>
-        <input value="<?php echo $order['PhoneSender']; ?>" type="tel" class="form-control" id="PhoneSender" name="PhoneSender" required>
+        <input value="<?php echo $order['PhoneSender'];?>" type="tel" class="form-control" id="PhoneSender" name="PhoneSender" required>
     </div>
     <div class="mb-3">
         <label for="region" class="form-label">Район</label>
         <select class="form-control" id="region" name="region">
-            
-                <option value="<?php echo $order['region']?>" selected ><?php echo $order['region']?></option>
-            
+            <?php foreach($regions as $region): ?>
+                <option value="<?php echo $region['region'];?>" <?php echo $order['region'] == $region['region'] ? 'selected' : ''; ?> ><?php echo $region['name'];?></option>
+            <?php endforeach;?>
         </select>
     </div>
     <div class="mb-3">

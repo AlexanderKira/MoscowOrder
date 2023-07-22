@@ -13,8 +13,8 @@ ob_start();
                     <div class="container">
                         <div class="row justify-content-between">
                             <div class="col"><?php echo 'Заказ №' . $order['id']?></div>
-                            <div class="col"> 20.07.2023 </div>
-                            <div class="col"> Не выполнен </div>
+                            <div class="col"><?php echo $order['created_at']?></div>
+                            <div class="col"><?php echo $order['status'] ? 'Выполнен' : 'Не выполнен'; ?></div>
                         </div>
                     </div>
                     
@@ -24,8 +24,8 @@ ob_start();
                 <div class="accordion-body">
                     <div class="container">
                         <div class="row mb-3">
-                            <div class="col"><strong>Район: </strong><?php echo $order['region']?></div>
-                            <div class="col"><strong>Цена: </strong> 2500р</div>
+                            <div class="col"><strong>Район: </strong><?php echo $order['name']?></div>
+                            <div class="col"><strong>Курьерские: </strong><?php echo $order['price']?>р</div>
                         </div>
                                 
                         <div class="mb-3"><strong>Отправление: </strong><?php echo $order['AddSender']?></div>

@@ -11,7 +11,7 @@ class AllOrdersController{
     public function edit(){
         $Model = new AllOrdersModel();
         $order = $Model->read($_GET['id']);
-        $areas = $Model->readAllareas();
+        $regions = $Model->readAllareas();
 
         // $roleModel = new Role();
         // $roles = $roleModel->getAllRoles();

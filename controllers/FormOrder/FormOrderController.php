@@ -4,7 +4,7 @@ class FormOrderController{
 
     public function create(){
         $Model = new FormOrderModel();
-        $areas = $Model->readAllareas();
+        $regions = $Model->readAllareas();
 
         include 'app/views/FormOrder/create.php';
     }
