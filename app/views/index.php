@@ -1,5 +1,6 @@
 <?php
 
+$title = 'Главная';
 ob_start();
 
 ?>

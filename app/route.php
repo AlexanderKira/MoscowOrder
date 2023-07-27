@@ -42,7 +42,12 @@ class Route{
                                 break;
                         }
                     }else{
-                        $controller->index();
+                        if(!isset($_POST['order-search'])){
+                            $controller->index();
+                        }else{
+                            $controller->serch();
+                        }
+                        
                     }
                 break;
             default:

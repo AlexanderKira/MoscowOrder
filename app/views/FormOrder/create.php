@@ -1,6 +1,6 @@
 <?php
 
-$title = 'EditOrder';
+$title = 'Оформить доставку';
 ob_start();
 
 ?>

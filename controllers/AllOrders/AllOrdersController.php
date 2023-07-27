@@ -4,6 +4,15 @@ class AllOrdersController{
     public function index(){
         $Model = new AllOrdersModel();
         $orders = $Model->readAllorders();
+        $regions = $Model->readAllareas();
+    
+        include 'app/views/AllOrders/index.php';
+    }
+
+    public function serch(){
+        $Model = new AllOrdersModel();
+        $orders = $Model->readsearch($_POST['order-search']);
+        $regions = $Model->readAllareas();
     
         include 'app/views/AllOrders/index.php';
     }
@@ -12,9 +21,6 @@ class AllOrdersController{
         $Model = new AllOrdersModel();
         $order = $Model->read($_GET['id']);
         $regions = $Model->readAllareas();
-
-        // $roleModel = new Role();
-        // $roles = $roleModel->getAllRoles();
 
         include 'app/views/AllOrders/edit.php';
     }

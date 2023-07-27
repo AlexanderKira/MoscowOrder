@@ -63,6 +63,7 @@ class AllOrdersModel{
         }
     }
 
+//поиск 
     public function readAllorders(){
         try{
             $stmt = $this->db->query("SELECT orderMoscow.id, orderMoscow.created_at, orderMoscow.status, region.name, regionPrice.price, orderMoscow.AddSender, orderMoscow.AddSenderApartment, orderMoscow.AddSenderfloor, orderMoscow.PhoneSender, orderMoscow.NameSender, orderMoscow.AddRecipient, orderMoscow.PhoneRecipient, orderMoscow.RecipientName, orderMoscow.comments, orderMoscow.NumberSeats, orderMoscow.Weight
@@ -82,7 +83,33 @@ class AllOrdersModel{
         }
     }
 
+    public function readsearch($SearchOrder){
+        //$id = trim(strip_tags(stripcslashes(htmlspecialchars($id))));
+        $query = "SELECT orderMoscow.id, orderMoscow.created_at, orderMoscow.status, region.name, region.region, regionPrice.price, orderMoscow.AddSender, orderMoscow.AddSenderApartment, orderMoscow.AddSenderfloor, orderMoscow.PhoneSender, orderMoscow.NameSender, orderMoscow.AddRecipient, orderMoscow.PhoneRecipient, orderMoscow.RecipientName, orderMoscow.comments, orderMoscow.NumberSeats, orderMoscow.Weight
+        FROM region
+        JOIN regionPrice 
+        ON region.region = regionPrice.region
+        JOIN orderMoscow 
+        ON region.region = orderMoscow.region
+        AND orderMoscow.id LIKE '%$SearchOrder%' 
+        ORDER BY orderMoscow.created_at DESC";
 
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $orders = [];
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $orders[] = $row;
+            }
+            return $orders;
+        } catch(PDOException $e){
+            return false;
+        }
+    }
+
+    
+    
+    //для вывода всех данных для интерфейса районов
     public function readAllareas(){
         try{
             $stmt = $this->db->query("SELECT * FROM `region`");
@@ -157,6 +184,8 @@ class AllOrdersModel{
             return false;
         }
     }
+
+    
 
     public function delete($id){
         $query = "DELETE FROM orderMoscow WHERE id = ?";
