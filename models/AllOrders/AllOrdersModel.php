@@ -91,10 +91,11 @@ class AllOrdersModel{
         ON region.region = regionPrice.region
         JOIN orderMoscow 
         ON region.region = orderMoscow.region
-        AND orderMoscow.id LIKE '%$SearchOrder%' 
-        OR orderMoscow.region LIKE '%$SearchRegion%'
-        OR orderMoscow.created_at LIKE '%$SearchDate%' 
-        OR orderMoscow.status LIKE '%$SearchStatus%' 
+        WHERE orderMoscow.id
+        AND orderMoscow.id LIKE '$SearchOrder' 
+        OR orderMoscow.region LIKE '$SearchRegion'
+        OR orderMoscow.created_at LIKE '$SearchDate' 
+        OR orderMoscow.status LIKE '$SearchStatus' 
         ORDER BY orderMoscow.created_at DESC";
 
         try{

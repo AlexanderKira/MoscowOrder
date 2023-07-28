@@ -48,7 +48,7 @@ class FormOrderModel{
             `AddRecipient` VARCHAR (3000) NOT NULL,
             `status` TINYINT(1) NOT NULL DEFAULT 0,
             `comments` VARCHAR (5000),
-            `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            `created_at` VARCHAR (10) NOT NULL,
             FOREIGN KEY (`region`) REFERENCES region (`region`)
             )";
 
@@ -89,13 +89,15 @@ class FormOrderModel{
         $RecipientName = $data['RecipientName'];
         $PhoneRecipient = $data['PhoneRecipient'];
         $AddRecipient = $data['AddRecipient'];
+        $created_at = date('Y-m-d');
         $comments = $data['comments'];
+
     
-        $query = "INSERT INTO `orderMoscow` (NameSender,PhoneSender,region,AddSender,AddSenderApartment,AddSenderfloor,NumberSeats,Weight,RecipientName,PhoneRecipient,AddRecipient,comments) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        $query = "INSERT INTO `orderMoscow` (NameSender,PhoneSender,region,AddSender,AddSenderApartment,AddSenderfloor,NumberSeats,Weight,RecipientName,PhoneRecipient,AddRecipient,created_at,comments) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
     
         try {
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$NameSender, $PhoneSender, $region, $AddSender, $AddSenderApartment, $AddSenderfloor, $NumberSeats, $Weight, $RecipientName, $PhoneRecipient, $AddRecipient, $comments]);
+            $stmt->execute([$NameSender, $PhoneSender, $region, $AddSender, $AddSenderApartment, $AddSenderfloor, $NumberSeats, $Weight, $RecipientName, $PhoneRecipient, $AddRecipient, $created_at, $comments]);
             return true;
         }catch(PDOException $e) {
             return false;
