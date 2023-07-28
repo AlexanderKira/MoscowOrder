@@ -9,9 +9,9 @@ class AllOrdersController{
         include 'app/views/AllOrders/index.php';
     }
 
-    public function serch(){
+    public function search(){
         $Model = new AllOrdersModel();
-        $orders = $Model->readsearch($_POST['order-search']);
+        $orders = $Model->readsearch($_POST['order-search'],$_POST['region-search'],$_POST['date-search'],$_POST['status-search']);
         $regions = $Model->readAllareas();
     
         include 'app/views/AllOrders/index.php';

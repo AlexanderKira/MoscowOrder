@@ -83,7 +83,7 @@ class AllOrdersModel{
         }
     }
 
-    public function readsearch($SearchOrder){
+    public function readsearch($SearchOrder, $SearchRegion, $SearchDate, $SearchStatus){
         //$id = trim(strip_tags(stripcslashes(htmlspecialchars($id))));
         $query = "SELECT orderMoscow.id, orderMoscow.created_at, orderMoscow.status, region.name, region.region, regionPrice.price, orderMoscow.AddSender, orderMoscow.AddSenderApartment, orderMoscow.AddSenderfloor, orderMoscow.PhoneSender, orderMoscow.NameSender, orderMoscow.AddRecipient, orderMoscow.PhoneRecipient, orderMoscow.RecipientName, orderMoscow.comments, orderMoscow.NumberSeats, orderMoscow.Weight
         FROM region
@@ -92,6 +92,9 @@ class AllOrdersModel{
         JOIN orderMoscow 
         ON region.region = orderMoscow.region
         AND orderMoscow.id LIKE '%$SearchOrder%' 
+        OR orderMoscow.region LIKE '%$SearchRegion%'
+        OR orderMoscow.created_at LIKE '%$SearchDate%' 
+        OR orderMoscow.status LIKE '%$SearchStatus%' 
         ORDER BY orderMoscow.created_at DESC";
 
         try{
@@ -123,25 +126,6 @@ class AllOrdersModel{
         }
     }
 
-    public function orderFilter($id){
-        $query = "SELECT orderMoscow.id, orderMoscow.created_at, orderMoscow.status, region.name, regionPrice.price, orderMoscow.AddSender, orderMoscow.AddSenderApartment, orderMoscow.AddSenderfloor, orderMoscow.PhoneSender, orderMoscow.NameSender, orderMoscow.AddRecipient, orderMoscow.PhoneRecipient, orderMoscow.RecipientName, orderMoscow.comments, orderMoscow.NumberSeats, orderMoscow.Weight
-        FROM region
-        JOIN regionPrice ON region.region = regionPrice.region
-        JOIN orderMoscow ON region.region = orderMoscow.region
-        WHERE orderMoscow.id = ? ORDER BY created_at DESC";
-
-        try{
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([$id]);
-            $orders = [];
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $orders[] = $row;
-            }
-            return $orders;
-        } catch(PDOException $e){
-            return false;
-        }
-    }
 
     public function read($id){
         $query = "SELECT orderMoscow.id, orderMoscow.status, orderMoscow.NameSender, orderMoscow.PhoneSender, region.region, region.name, orderMoscow.AddSender, orderMoscow.AddSenderApartment, orderMoscow.AddSenderfloor, orderMoscow.NumberSeats, orderMoscow.Weight, orderMoscow.RecipientName, orderMoscow.PhoneRecipient, orderMoscow.AddRecipient, orderMoscow.comments 

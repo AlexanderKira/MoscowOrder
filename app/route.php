@@ -40,14 +40,13 @@ class Route{
                             case 'delete':
                                 $controller->delete();
                                 break;
+                            case 'search':
+                                $controller->search();
+                            break;
                         }
                     }else{
-                        if(!isset($_POST['order-search'])){
-                            $controller->index();
-                        }else{
-                            $controller->serch();
-                        }
-                        
+                        $controller->index();
+                        break;
                     }
                 break;
             default:
