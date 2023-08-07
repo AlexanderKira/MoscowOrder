@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $title ?></title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link rel="stylesheet" href="app/views/style.css">
 </head>
 <body>
     <div class="container">
@@ -20,7 +21,7 @@
 							<a class="nav-link" href="index.php?page=FormOrder&action=create">Оформить доставку</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Инструкция</a>
+							<a class="nav-link" href="index.php?page=FormOrder&action=instruction">Инструкция</a>
 						</li>
 					</ul>
 					<div class="d-flex">

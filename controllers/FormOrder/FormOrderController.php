@@ -2,6 +2,14 @@
 
 class FormOrderController{
 
+    public function instruction(){
+        include 'app/views/FormOrder/instruction.php';
+    }
+
+    public function FormEC(){
+        include 'app/views/FormOrder/index.php';
+    }
+
     public function create(){
         $Model = new FormOrderModel();
         $regions = $Model->readAllareas();

@@ -29,13 +29,14 @@ ob_start();
                     <option value="1">Выполнен</option>
                 </select>
             </div>
-            <button type="submit" name="submit" class="col mb-3 btn btn-primary">Найти</button>
+            <button type="submit" class="col mb-3 btn btn-primary">Найти</button>
         </div>
     </form>
 </div>
 
     <div class="container mt-4">
     <?php //функция readAllorders 
+
     //var_dump($_POST);
     // if(isset($_POST['submit'])){ 
     //     if(isset($_GET['go'])){ 

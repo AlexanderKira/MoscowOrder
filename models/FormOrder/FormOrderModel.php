@@ -64,6 +64,7 @@ class FormOrderModel{
     }
 
 
+
     public function readAllareas(){
         try{
             $stmt = $this->db->query("SELECT * FROM `region`");

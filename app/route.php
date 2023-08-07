@@ -14,11 +14,17 @@ class Route{
                     $controller = new FormOrderController();
                     if(isset($_GET['action'])){
                         switch ($_GET['action']){
+                            case 'FormEC':
+                                $controller->FormEC();
+                                break;
                             case 'create':
                                 $controller->create();
                                 break;
                             case 'store':
                                 $controller->store();
+                                break;
+                            case 'instruction':
+                                $controller->instruction();
                                 break;
                         }
                     }else{

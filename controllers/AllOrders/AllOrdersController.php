@@ -10,11 +10,26 @@ class AllOrdersController{
     }
 
     public function search(){
-        $Model = new AllOrdersModel();
-        $orders = $Model->readsearch($_POST['order-search'],$_POST['region-search'],$_POST['date-search'],$_POST['status-search']);
-        $regions = $Model->readAllareas();
+        $data =[
+            'order-search' => '',
+            'region-search' => '',
+            'date-search' => '',
+            'status-search' => '2',
+        ];
+
+        if($_POST === $data){
+            $Model = new AllOrdersModel();
+            $orders = $Model->readAllorders();
+            $regions = $Model->readAllareas();
     
-        include 'app/views/AllOrders/index.php';
+            include 'app/views/AllOrders/index.php';
+        }else{
+            $Model = new AllOrdersModel();
+            $orders = $Model->readsearch($_POST['order-search'],$_POST['region-search'],$_POST['date-search'],$_POST['status-search']);
+            $regions = $Model->readAllareas();
+    
+            include 'app/views/AllOrders/index.php';
+        }
     }
 
     public function edit(){
@@ -28,6 +43,7 @@ class AllOrdersController{
     public function update(){
         $Model = new AllOrdersModel();
         $Model->update($_GET['id'], $_POST);
+        var_dump($_POST);
 
         header('Location: index.php?page=AllOrders');
     }

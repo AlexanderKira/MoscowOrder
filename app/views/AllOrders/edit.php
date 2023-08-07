@@ -78,7 +78,7 @@ ob_start();
     </div>
     <div class="mb-3">
         <label for="comments" class="form-label">Комментарий к заказу</label>
-        <textarea value="<?php echo $order['comments']; ?>" class="form-control" id="comments" name="comments"></textarea>
+        <input value="<?php echo $order['comments']; ?>" class="form-control" id="comments" name="comments"></input>
     </div>
 
     

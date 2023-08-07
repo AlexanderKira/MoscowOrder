@@ -1,0 +1,7 @@
+.tabs__block{
+    display: none;
+}
+
+.tabs__block:target{
+    display: block;
+}

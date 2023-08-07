@@ -48,7 +48,7 @@ class AllOrdersModel{
             `AddRecipient` VARCHAR (3000) NOT NULL,
             `status` TINYINT(1) NOT NULL DEFAULT 0,
             `comments` VARCHAR (5000),
-            `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            `created_at` VARCHAR (10) NOT NULL,
             FOREIGN KEY (`region`) REFERENCES region (`region`)
             )";
 
@@ -70,7 +70,7 @@ class AllOrdersModel{
             FROM region
             JOIN regionPrice ON region.region = regionPrice.region
             JOIN orderMoscow ON region.region = orderMoscow.region
-            ORDER BY created_at DESC
+            ORDER BY orderMoscow.id DESC
             ");
 
             $orders = [];
@@ -96,7 +96,7 @@ class AllOrdersModel{
         OR orderMoscow.region LIKE '$SearchRegion'
         OR orderMoscow.created_at LIKE '$SearchDate' 
         OR orderMoscow.status LIKE '$SearchStatus' 
-        ORDER BY orderMoscow.created_at DESC";
+        ORDER BY orderMoscow.id DESC";
 
         try{
             $stmt = $this->db->prepare($query);
@@ -129,10 +129,13 @@ class AllOrdersModel{
 
 
     public function read($id){
-        $query = "SELECT orderMoscow.id, orderMoscow.status, orderMoscow.NameSender, orderMoscow.PhoneSender, region.region, region.name, orderMoscow.AddSender, orderMoscow.AddSenderApartment, orderMoscow.AddSenderfloor, orderMoscow.NumberSeats, orderMoscow.Weight, orderMoscow.RecipientName, orderMoscow.PhoneRecipient, orderMoscow.AddRecipient, orderMoscow.comments 
+        $query = "SELECT orderMoscow.id, orderMoscow.status, orderMoscow.NameSender, orderMoscow.PhoneSender, 
+        region.region, region.name, orderMoscow.AddSender, orderMoscow.AddSenderApartment, 
+        orderMoscow.AddSenderfloor, orderMoscow.NumberSeats, orderMoscow.Weight, orderMoscow.RecipientName, 
+        orderMoscow.PhoneRecipient, orderMoscow.AddRecipient, orderMoscow.comments 
         FROM region
         JOIN orderMoscow ON region.region = orderMoscow.region
-        WHERE orderMoscow.id = ? ORDER BY created_at DESC";
+        WHERE orderMoscow.id = ? ORDER BY orderMoscow.id DESC";
 
         try{
             $stmt = $this->db->prepare($query);
@@ -156,10 +159,11 @@ class AllOrdersModel{
         $RecipientName = $data['RecipientName'];
         $PhoneRecipient = $data['PhoneRecipient'];
         $AddRecipient = $data['AddRecipient'];
-        $comments = $data['comments'];
         $status = !empty($data['status']) && $data['status'] !== 0 ? 1 : 0;
+        $comments = $data['comments'];
+        
 
-        $query = "UPDATE orderMoscow SET NameSender = ?, PhoneSender = ?, region = ?, AddSender = ?, NumberSeats = ?, Weight = ?, RecipientName = ?, PhoneRecipient = ?, AddRecipient = ?, status = ? , comments = ? WHERE id = ?";
+        $query = "UPDATE orderMoscow SET NameSender = ?, PhoneSender = ?, region = ?, AddSender = ?, AddSenderApartment = ?, AddSenderfloor = ?, NumberSeats = ?, Weight = ?, RecipientName = ?, PhoneRecipient = ?, AddRecipient = ?, status = ? , comments = ? WHERE id = ?";
     
         try{
             $stmt = $this->db->prepare($query);
@@ -170,7 +174,6 @@ class AllOrdersModel{
         }
     }
 
-    
 
     public function delete($id){
         $query = "DELETE FROM orderMoscow WHERE id = ?";
